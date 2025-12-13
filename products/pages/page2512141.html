@@ -1,66 +1,262 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja_JP" prefix="og: http://ogp.me/ns#">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-        <title>page2512141</title>
-        <meta name="description" content="ようこそ">
+        <title>page251214_1</title>
+        <meta name="description" content="RPGツクールでガチの「不思議のダンジョン」を作りたかった話">
 
-        <meta property="og:url" content="ページのURL" />
-        <meta property="og:title" content="ページのタイトル" />
-        <meta property="og:type" content="ページのタイプ">
-        <meta property="og:description" content="記事の抜粋" />
-        <meta property="og:image" content="画像のURL" />
-        <meta property="og:site_name" content="サイトタイトル" />
+        <meta property="og:url" content="{{site.url}}{{page.url}}" />
+        <meta property="og:title" content="RPGツクールでガチの「不思議のダンジョン」を作りたかった話" />
+        <meta property="og:type" content="article">
+        <meta property="og:description" content="{{page.description}}" />
+        <meta property="og:image" content="{{ site.baseurl }}/image/thumbnail.jpg" />
+        <meta property="og:site_name" content="{{ site.title | default: site.github.repository_name }}" />
         <meta property="og:locale" content="ja_JP" />
     </head>
     <body>
-        <header class="bg-dark text-white">
+        <header class="pt-1 bg-dark text-white">
         <div class="container py-5 text-center">
-            <h1 class="display-5">サイトタイトル</h1>
-            <p class="lead">ヘッダー画像はここに差し替えてください</p>
-            <div class="bg-secondary" style="height:180px; border-radius:8px;"></div>
+            <div class="bg-secondary">
+                <img class="img-fluid" src="../../image/head.jpg" alt="トップ"/>
+            </div>
         </div>
         </header>
+        <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../../index.html">RPG Maker doc.</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="../../index.html">Home</a>
+                    <a class="nav-link active" href="../../about.html">サイトについて/About</a>
+                    <a class="nav-link active" href="../../terms.html">利用規約/Terms</a>
+                    <a class="nav-link disabled" href="#">過去ログ/History</a>
+                    <a class="nav-link disabled">お問い合わせ/Contact</a>
+                </div>
+                </div>
+            </div>
+        </nav>
         <div class="container my-4">
+            <div class="row text-center mb-4">
+                <section class="col">
+                    <h2>RPGツクールでガチの「不思議のダンジョン」を作りたかった話</h2>
+                    <img src="../../image/thumbnail.jpg" class="img-fluid mb-4" alt="サムネイル" />
+                    <p>この記事は、<a href="https://adventar.org/calendars/11826" >「ゲーム制作アドベントカレンダー Advent Calendar 2025」</a>の12月14日分のものです。</p>
+                    <p>前置きやあとがきが長いので、目次から読みたいとこだけ読めばよろし。</p>
+                </section>
+            </div>
             <div class="row">
                 <aside class="col-md-3 mb-4">
                 <nav class="sticky-top" style="top:1rem;">
-                    <h5>タグ一覧</h5>
+                    <h5>目次</h5>
                     <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="#tag-js">JavaScript</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#tag-css">CSS</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#tag-html">HTML</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#summery">はじめに</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#background">開発に挑戦した経緯</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#turnSystem">不思議のダンジョンにおけるターンシステム</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dungeon">ダンジョン生成アルゴリズム</a></li>    
+                    <li class="nav-item"><a class="nav-link" href="#item">定番アイテムの作成</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#endup">中断した理由</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#finally">さいごに</a></li>
                     </ul>
                 </nav>
                 </aside>
 
                 <main class="col-md-9">
-                <section id="tag-js" class="border rounded p-3 mb-4">
-                    <h2>JavaScript</h2>
-                    <p>RPGツクールにおける不思議のダンジョン開発記録</p>
-                    <img src="example.jpg" class="img-fluid mb-2" alt="例画像">
-                    <video controls class="w-100">
-                    <source src="video/202510_SceneAnimation.mp4" type="video/mp4">
+                <section id="summery" class="border rounded p-3 mb-4">
+                    <h2>はじめに</h2>
+                    <p>RPGツクールで「風来のシレン」のような「不思議のダンジョン」系のゲームを作りたかった頃の話。</p>
+                    <p>ここでは、限りなく近づけるために試行錯誤したことやなぜ開発を中断してしまったかについてをまとめる。</p>
+                    <p>もしこれを読んだあなたが、私と同じく「不思議のダンジョン」ライクゲームを作りたいと思うなら、参考にしてほしい。</p>
+                    <p>願わくば、「究極の不思議のダンジョン」をRPGツクールでも作れることを証明してくれることを……。</p>
+                    <br>
+                    <p>This is the story of when I wanted to create a “Mystery Dungeon”-style game like “Shiren the Wanderer” using RPG Maker.</p>
+                    <p>Here, I'll summarize the trial and error I went through to get as close as possible, and why I ended up halting development.</p>
+                    <p>If you're reading this and also want to make a “Mystery Dungeon”-like game, I hope you'll find this useful.</p>
+                    <p>I'd be incredibly happy if you could prove that the “ultimate Mystery Dungeon” can indeed be made with RPG Maker.</p>
+                    <p>Translated with DeepL.com (free version)</p>
+                </section>
+
+                <section id="background" class="border rounded p-3 mb-4">
+                    <h2>開発に挑戦した経緯</h2>
+                    <p>開発した当時は2022年ごろで、「不思議のダンジョン」の本家であるスパイク・チュンソフトからまだ「風来のシレン6」が出る前だった。</p>
+                    <p>私は「トルネコの大冒険3」が好きで、YouTubeのいろんな配信者の実況を漁っていた。</p>
+                    <p>その時ふと「ツクールでも不思議のダンジョンみたいなゲームを世に出している人はどのくらいいるのか」をふと気になって調べてみた。</p>
+                    <p>例えばツクール製ではないが、当時から完成度が高い不思議のダンジョン系ゲームとして評判だったNEKOTOKAGE GAMES制作の<a href="https://nekotokage.com/">「魔物娘シリーズ」</a>なんかもある。</p>
+                    <p>ツクールにもそうしたゲームがあれば面白そうだなと思ったのだ。</p>
+                    <p>あくまで、私が調べた範囲だけの話だが、確かにツクール製の「不思議のダンジョン」風ゲームはあったものの、本家どうしても似つかないところが気になってしまった。</p>
+                    <P><span class="fs-5">上下左右4方向しか動かないキャラクター</span></P>
+                    <p><span class="fs-5">床にアイテムが落ちておらず、拾ったり落としたりの概念もない</span></p>
+                    <p><span class="fs-5">罠みたいなヒリヒリ感もなくただダンジョンを突き進む感覚</span></p>
+                    <p><strong>念のため断っておくが、私は決してそれらのゲームや製作者を非難したいのではない。リリースしてくれているだけで頭が下がるばかりだ。</strong></p>
+                    <p>たけど、それらのゲームが実装を断念した不思議のダンジョンのシステムは本当に実現不可能なのか？私は疑問に思った。</p>
+                    <p>気になった私はそこから一心不乱に、限りなく本家に近い「不思議のダンジョン」を手元にあったRPGツクールMVで実装すべく研究したのだった。</p>
+                    <p>ちなみにMVにした理由は、発売当初の販売元の企業が「スパイク・チュンソフト」だったからである。なんという縁。</p>
+                    <p>えっ、そんな回りくどいことするなら「U○ity使えばいいのに」って?</p>
+                    <p><span class="fs-1 fw-bold fst-italic">馬鹿野郎、貴様それでもツクラー(Maker)か！</span></p>                    
+                </section>
+
+                <section id="turnSystem" class="border rounded p-3 mb-4">
+                    <h2>不思議のダンジョンにおけるターンシステム</h2>
+                    <p>不思議のダンジョン開発中は、ターンシステムの確立が一番時間をかけたかもしれない。</p>
+                    <p>ターンシステムの基本的な部分はtomoaky氏の「TMTurnMove」プラグインが優秀で、おそらくほとんどのツクール製の不思議のダンジョン開発者は採用したであろう。ただそれでも限界がある。</p>
+                    <p>ここで、不思議のダンジョンの基本的な処理の流れを確認する。</p>
+                    <ul class="list-group list-group-numbered">
+                        <li class="list-group-item ">プレイヤーが行動する(移動・攻撃・休憩)</li>
+                        <li class="list-group-item bg-warning"><b>床にあるアイテムやトラップの処理</b></li>
+                        <li class="list-group-item ">味方キャラが行動する(任意)</li>
+                        <li class="list-group-item ">敵が行動する(任意)</li>
+                        <li class="list-group-item" >石像などの部屋オブジェクト(トルネコの大冒険3ではおなじみ)</li>
+                    </ul>
+                    <br>
+                    <p>この2番の床処理が曲者だ。</p>
+                    <p>というのもこの床処理を行おうとすると、敵のターン処理がうまく動作できないことがあるのだ。</p>
+                    <img src="../../image/turnSystem1.png" class="img-fluid mb-4" alt="turnSystem1" />
+                    <p>ツクールの仕様上、イベント起動中は「並列処理」や「自動処理」ではないイベントはタイミングを逃して処理をカットされてしまうためである。</p>
+                    <p>だからといって全部を並列処理とかにすると、負荷が大きくなると、逆にこんどはいつ並列処理を止めるかということを考えなくてはならない。</p>
+                    <p>この問題を解決するにあたって、私は<b>プレイヤーが歩いた後の処理increaseStepの後の処理をプラグインからコモンイベントにすべて移管する手法をとった。</b></p>
+                    <p>TMTurnMoveを改造し、$gameTempのreserveCommonEventから任意のコモンイベントを呼び出し、プレイヤー移動後のイベント処理を一括管理させている。</p>
+                    <p>コモンイベント内ではまずは、プレイヤーのXY座標を取得し、床にアイテムイベントがあればまずそれを処理する。</p>
+                    <p>当然だが、アイテムの所持限界を超えている場合に床のアイテムを拾えない仕様もPNDK_LuggageCapacityを組み込んで実装済みだ。</p>
+                    <img src="../../image/turnSystem2.png" class="img-fluid mb-4" alt="turnSystem2" />
+                    <p>イベントのスクリプトからsetUpChildを使って現在実行中のコモンイベント情報を格納している配列にむりやり床イベントをねじ込むという強引な手法で実装している。</p>
+                    <p>その後、エネミーの行動処理に移る。</p>
+                    <p>ここでもちょっとプラグインを魔改造しており、プレイヤーが動いてなくても1ターン分の移動処理をする「skipTurnMove」というプラグインコマンドの処理に、「敵が攻撃できるチャンスがあればその分の情報を配列に格納する」という改造をした。</p>
+                    <p>あとは配列にぶち込まれた内容をもとに攻撃処理をさせれば、床アイテムで中断されないほか、いわゆる倍速1~2回行動キャラの攻撃パターンを確実に実装できる。</p>
+                    <img src="../../image/turnSystem3.png" class="img-fluid mb-4" alt="turnSystem3" />
+                    <p>コモンイベントに処理を任せる最大のメリットはイベントであるために、ほかの通常イベントの挙動を制御できる(勝手に動作しない)点にある。</p>
+                    <p>そのほか画像内で見えているように、動いていない休憩状態でもターン経過をカウントする処理や、敵の吹っ飛ばし攻撃を受けたりして今いる地点から動いたら、攻撃を中断して処理を軽くする工夫とかもしていたようだ。</p>
+                    <p>というのも、もう3年も前の話なので、自分でも何をどうやって作ってたのかすっかり忘れたからだ(笑)</p>
+                </section>
+
+                <section id="dungeon" class="border rounded p-3 mb-4">
+                    <h2>ダンジョン生成アルゴリズム</h2>
+                    <p>「不思議のダンジョン」といえば、毎回形状が変わるマップというのが醍醐味である。</p>
+                    <p>まさにローグライクの神髄と言ってもいい要素である。</p>
+                    <p>サンシロ氏が制作した「SAN_MapGenerator」という大変ありがたいプラグインがあり、すでにリリースされているツクール版不思議のダンジョンでも使用されているものを見かけた。</p>
+                    <p>しかし、私はひとつだけ気になることがあった。</p>
+                    <p>それは、通路である。</p>
+                    <p>「風来のシレン」なんかを見ていると、通路の中には途中で分岐して複数同じ部屋に入れるルートや、通路だけの行き止まりなどがあったりする(プレイヤーにとっては台パンものだけど)</p>
+                    <p>上記プラグインだと基本１本道のため、ちょっと単調になりやすい気がしたのだ。</p>
+                    <p>またマップサイズによっては生成までに時間がかかってしまうこともあるため、なるべく処理が素早くできる方法も考えたかった。</p>
+                    <p>そこで私はsuppon氏が制作した「SupponChangeTileId」に目を付けた。</p>
+                    <p>上記プラグインと簡単なアルゴリズムを用いることで、理想のランダムマップ生成処理を実現させることができた</p>
+                    <p>ここでは簡単に概要を説明する。</p>
+                    <p>例えば、基本的な3&times;3の部屋構造をした図形をイメージしてほしい。</p>
+                    <img src="../../image/map1.png" class="img-fluid mb-4" alt="turnSystem3" />
+                    <p>この格子状の四角にはそれぞれひとつずつ、合計9つの部屋があるとしよう</p>
+                    <p>このとき、<b>すべての部屋が最低でも1つ上下左右いずれかの部屋と通路でつながっているような構造</b>にしたい場合、どうすればいいだろうか?</p>
+                    <p>もし通路でつながっていない部屋ができてしまうと、場合によってはプレイヤーが次の階段にたどり着けず詰みゲーになってしまう。不思議のダンジョンでそれは絶対あってはならない。</p>
+                    <p>高度な探索アルゴリズムを使ってうまいこと掘り進めるようなことをやってもいいのだが、さすがにそこまでの数学を勉強する気にはならないと思う。</p>
+                    <p>私の場合はとことんシンプルにした。</p>
+                    <p>ズバリ、壁や部屋ではなく、格子点に注目したのだ。</p>
+                    <img src="../../image/map2.png" class="img-fluid mb-4" alt="turnSystem3" />
+                    <p>これら格子点1つに対して、伸ばしていい壁を上下左右いずれかひとつとするとどうなるだろうか?</p>
+                    <img src="../../image/map3.png" class="img-fluid mb-4" alt="turnSystem3" />
+                    <p>ご覧の通り、そのフロアのすべての部屋が何かしら別の部屋と結びつくのだ。</p>
+                    <p>あとは「SupponChangeTileId」の出番である。</p>
+                    <p>百聞は一見に如かず、動画でその様子をみてもらいたい。</p>
+                    <video controls class="w-100 mb-4">
+                        <source src="../../video/sampleMap.mp4" type="video/mp4">
                     </video>
+                    <p>ゲームをリセットするたびにマップがランダムになっているのがおわかりだろう。</p>
+                    <p>マップのところどころに岩があるのは、部屋のパターンが変わっているのを見るためのテスト用アイコンとして使っているためだ。</p>
                 </section>
 
-                <section id="tag-css" class="border rounded p-3 mb-4">
-                    <h2>CSS</h2>
-                    <p>本文テキスト...</p>
+                <section id="item" class="border rounded p-3 mb-4">
+                    <h2>定番アイテムの作成</h2>
+                    <p>上述のターンシステムやマップ生成開発と並行して、「不思議のダンジョン」でおなじみのアイテム類をいくつか実装することができた</p>
+                    <p>正直自分でも思い出せないくらい細かい仕様が多すぎるので雑な解説で済ませることにする。</p>
+                    <hr>
+                    <h3>トンネルの杖・大部屋の巻物</h3>
+                    <p>まずは、私が尊敬するトリアコンタン氏の「TempleteEvent」および「EventRespawn」で魔法弾イベントを用意する。</p>
+                    <p>これに少々面倒だが移動ルートをスクリプト処理で書いていく。</p>
+                    <ul class="list-group list-group-numbered ">
+                        <li class="list-group-item ">プレイヤーの座標と向きを取得する</li>
+                        <li class="list-group-item ">プレイヤーの視界上に魔法弾を置く</li>
+                        <li class="list-group-item ">魔法弾イベントの向きをプレイヤーと合わせる</li>
+                        <li class="list-group-item ">すり抜けをONにする</li>
+                        <li class="list-group-item" >1マス進む(壁なら掘る演出)</li>
+                        <li class="list-group-item" >10マス進むか壊せない壁にぶつかった時点でイベントを消去する</li>
+                    </ul>
+                    <p>次にアイテム欄だが、ツクールではアイテムは「使う」しかないが、不思議のダンジョンでは投げたり振ったり飲んだりアイテムに対応する動作コマンドが設定されているので、それをコモンイベントの呼び出しという形で実装した。</p>
+                    <p></p>
+                    <p>大部屋の巻物はそこまで難しくない。</p>
+                    <p>あらかじめベースとなるマップは外側の壊れない壁と床だけにしておけば、「SupponChangeTileId」の変更をリセットするプラグインコマンドを実行するだけだ。</p>
+                    <p>画面切り替えの間にフェードインを加えておけばそこまでゲームの演出として見ごたえが劣ることはないだろう。</p>
+                    <video controls class="w-100 mb-4">
+                        <source src="../../video/sampleOobeya.mp4" type="video/mp4">
+                    </video>                    
+                    <br>
+                    <p>だが、ここまでやってもうまくいかなかったことが1つある。それはマップに最初に入った瞬間、つまりフロアを上ったり降りたりした瞬間のマップが、ミニマップに反映されない点である。</p>
+                    <p>一応マップイベントに配置した自動化処理で上記の「SupponChangeTileId」のプラグインコマンドを起動した後で木星ペンギン氏の「MPP_MiniMap」(動画右上)のリフレッシュをかけているのだが、一部挙動によっては変更したマップの初期形状を反映されていないことがある。この原因についてはまだよくわかっていない。</p>
+                    <p>おそらくプレイヤーの初期位置とマップ生成のタイミングなどが問題の可能性もありそうなので、プラグインコマンドの間にウェイトをかけたりするとうまくいくかもしれない。</p>
+                    <hr>
+                    <h3>吹き飛ばしの杖・とびつきの杖</h3>
+                    <p>杖アイテムの起動はツクールのデータベースの効果欄からコモンイベントを起動している。</p>
+                    <p>これは杖の弾道を呼び出す際にプライヤーのXY座標および向きを把握するために変数に代入してからイベントを呼び出しているためである。</p>
+                    <p>トリアコンタン氏の「PlayerShiftTurn」による方向転換も8方向に対応させた。</p>
+                    <p>ポイントと言えば、ちゃんと吹き飛ばし処理が終わったら、プレイヤーの行動が終わって敵ターンを処理するコードを実行させることくらいか？</p>
+                    <p>あとはイベントが終了するまで移動ボタンを押せないようにするのも大事だ。</p>
+                    <p>というのもツクールはメニュー画面を開いたりイベントが動いているときも方向キーを検知しようとしているので、場合によっては挙動がめちゃくちゃになる可能性もあるので注意が必要だ。</p>
+                    <video controls class="w-100">
+                        <source src="../../video/sampleFukiTobi.mp4" type="video/mp4">
+                    </video>
+                    <hr>
+                    <h3>場所替えの杖</h3>
+                    <p>上記の実装の理屈が分かれば、これも大して難しいことはしていない。</p>
+                    <p>場所替え専用の魔法弾イベントの中に「TriggerExtension」で敵キャラ(味方キャラ)だけを接触対象にしておけば床アイテムなどもスルーしてくれる。</p>
+                    <p>こちらもちゃんと移動ルートに8方向対応の歩行処理が盛り込まれているので斜めにいるキャラとも場所替えができる。</p>
+                    <video controls class="w-100">
+                        <source src="../../video/sampleSwap.mp4" type="video/mp4">
+                    </video>
+                    <hr> 
+                    <h3>地雷</h3>
+                    <p>不思議のダンジョンを遊んだ人であれば、トラップのひとつ「地雷」はもはや定番であるだろう。</p>
+                    <p>というか某異世界の迷宮に挑んだ人にとってはトラウマになっている人もいるだろう。</p>
+                    <p>※知らない人に説明すると、踏んだら大ダメージを受けたり、近くに誘爆する魔物がいれば連鎖反応で追加ダメージが発生したり「トルネコの大冒険3」では爆発耐性のないモンスターは敵味方問わず消滅=即死という、これまでのプレイヤーの努力を一瞬で無に帰す鬼畜トラップだ。</p>                                                            
+                    <video controls class="w-100">
+                        <source src="../../video/sampleThunder.mp4" type="video/mp4">
+                    </video>
+                    <p><span class="fs-1 fw-bold">当然実装済みだ、喜べお前ら。</span></p>
+                    <p>爆発ではなく雷が落ちる仕様なのは、開発当時に例のウクライナ侵攻がジャストタイムで起きたために「今、地雷とか出したら不謹慎とか言われないかな」と気にしぃな私が取った苦肉の策であった。</p>
+                    <p>どうでもいいことだが、主人公に据えようと思っていた「スカジジ」には、北欧神話の山の女神「スカディ」に認められた特別な戦士という設定がある。</p>
+                    <p><del>まぁ、私はFGOやったことないんだけど。</del></p>
+                    <p>そういうわけで簡単にくたばるようなキャラじゃないから、ダンジョン内も「神々の遊戯とか試練」ということにしておけば、トラップで雷が降っても何ら不思議ではないと考えたわけだ。むしろ地雷より物騒じゃないかって？</p>
+                    <p>まぁ、結局リリースできてないんだから、まったくもって無意味な心配だったわけだけどね。</p>
+                    <p><span class="fs-1 fw-bold fst-italic">コロナも戦争も不毛な同調圧力も全部クソくらえ、バーカ!!!</span></p>
                 </section>
 
-                <section id="tag-html" class="border rounded p-3 mb-4">
-                    <h2>HTML</h2>
-                    <p>本文テキスト...</p>
+                <section id="endup" class="border rounded p-3 mb-4">
+                    <h2>中断した理由</h2>
+                    <p>自分でもここまでよくやったなと思いつつも、結局完成品を世に出すことはなかった。</p>
+                    <p>なぜそこたどり着けなかったかについては、端的に言ってしまえば<b>完全なキャパオーバー</b>である。</p>
+                    <p>当たり前だが、仕事しながらこんな複雑な仕組みのゲームを一人で延々と作っていれば、そりゃあ頭がおかしくなるのも当然だ。</p>
+                    <p>実際、当時の私は半分ノイローゼになりかけていた。</p>
+                    <h3>まだまだある未実装</h3>
+                    <p>例えば、ターン移動におけるダッシュ移動時のターン連動処理のコードが作りかけになっているところを見ると、当時の私は相当難儀したんだろう。</p>
+                    <p>移動面で言えば、「かどぬけ」や「かべぬけ」と呼ばれる斜め移動の行動を考えたりするのも仕掛りになっている形跡があった。</p>
+                    <p>マップのパターンやエネミーもステータス含め膨大な量のバランス調整。</p>
+                    <p>「不思議のダンジョン」とは、想像超える難易度の高さだったということだ。</p>
+                    <p><del>というか、そもそもエタるくらいなら、どこぞの&#129299;みたいにどうでもいいこだわりを捨てた方がマシだった話ではある。</del></p>
+                    <p><del>むしろあっちは完成しているだけある意味まだマシか。</del></p>
+  
                 </section>
 
-                <section id="tag-html" class="border rounded p-3 mb-4">
+                <section id="finally" class="border rounded p-3 mb-4">
                     <h2>最後に</h2>
-                    <p>ここまで読んでいただいた</p>
-                    <p><span class="fs-1 fst-italic">タダでなんでも教えてもらえると思うな！</span></p>
-                    <p>以上 2026年もどうぞよろしく</p>
+                    <p>ここまで読んでいただき、本当にありがとう。</p>
+                    <p>決してわかりやすい解説ではない点はどうかご容赦いただきたい。</p>
+                    <p>あらためて自分の挑戦を振り返ると0から不思議のダンジョン、もっと言えばローグライクを築いた先駆者たちがどれだけ偉大かというのを思い知らされた。</p>
+                    <p>こうしていまなお「風来のシレン」等が根強い人気のジャンルとして存在するのは、「不思議のダンジョン」というゲームシステムがそれだけ良く練り上げられたものだということに他ならない。</p>
+                    <p>私は結局完成できなかったが、もしこれを読んだあなたが真剣に、そして本気で「不思議のダンジョン」開発に挑戦したいというのであれば、フォーラムから連絡してくれれば、何かしらのアドバイスは与えたいと思う。</p>
+                    <p><del>多分いないと思うけど。</del></p>
+                    <p>これからも、RPGツクールシリーズの更なる発展を願って。</p>
+                    <p>そして、「不思議のダンジョン」という作品を今なお続けてくれているスパイク・チュンソフトに心からの感謝を。</p>
+                    <p>14 Dec 2025 Ganmo</p>
                 </section>
                 </main>
             </div>
